@@ -84,7 +84,7 @@ if ($_POST["change_mode"] == "1") {
 
     &nbsp;version <?=$mod_version?><br>
     <? 
-    if (file_exists( $bin_nmcl_i )) { 
+    if (file_exists( $bin_nmcli )) { 
         echo "&nbsp;&nbsp; $mod_alias <font style='color:lime'>installed</font><br>";
     } else {
 	echo "&nbsp;&nbsp; $mod_alias <font style='color:red'>not installed</font><br>";
