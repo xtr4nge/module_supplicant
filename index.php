@@ -67,14 +67,16 @@ $service = $_POST["service"];
 // DELETE LOG
 if ($logfile != "" and $action == "delete") {
     $exec = "$bin_rm ".$mod_logs_history.$logfile.".log";
-    exec("$bin_danger \"$exec\"", $dump);
+    //exec("$bin_danger \"$exec\"", $dump); //DEPRECATED
+    exec_fruitywifi($exec);
 }
 
 // SET MODE
 if ($_POST["change_mode"] == "1") {
     $ss_mode = $service;
     $exec = "/bin/sed -i 's/ss_mode.*/ss_mode = \\\"".$ss_mode."\\\";/g' _info_.php";
-    exec("$bin_danger \"" . $exec . "\"", $output);
+    //exec("$bin_danger \"" . $exec . "\"", $output); //DEPRECATED
+    $output = exec_fruitywifi($exec);
 }
 
 ?>

@@ -18,8 +18,9 @@
 ?>
 <?
 
-include "../_info_.php";
+//include "../login_check.php";
 include "../../../config/config.php";
+include "../_info_.php";
 include "../../../functions.php";
 
 include "options_config.php";
@@ -52,13 +53,16 @@ $mb_password = $_POST['mb_password'];
 if ($type == "save_supplicant") {
 	
     $exec = "/bin/sed -i 's/^\\\$supplicant_ssid=.*/\\\$supplicant_ssid=\\\"$supplicant_ssid\\\";/g' ../_info_.php";
-    exec("$bin_danger \"" . $exec . "\"", $output);
+    //exec("$bin_danger \"" . $exec . "\"", $output); //DEPRECATED
+    $output = exec_fruitywifi($exec);
     
     $exec = "/bin/sed -i 's/^\\\$supplicant_psk=.*/\\\$supplicant_psk=\\\"$supplicant_psk\\\";/g' ../_info_.php";
-    exec("$bin_danger \"" . $exec . "\"", $output);
+    //exec("$bin_danger \"" . $exec . "\"", $output); //DEPRECATED
+    $output = exec_fruitywifi($exec);
     
     $exec = "/bin/sed -i 's/^\\\$supplicant_iface=.*/\\\$supplicant_iface=\\\"$supplicant_iface\\\";/g' ../_info_.php";
-    exec("$bin_danger \"" . $exec . "\"", $output);
+    //exec("$bin_danger \"" . $exec . "\"", $output); //DEPRECATED
+    $output = exec_fruitywifi($exec);
 
 }
 
