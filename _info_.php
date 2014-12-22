@@ -1,6 +1,6 @@
 <?
 $mod_name="supplicant";
-$mod_version="1.1";
+$mod_version="1.2";
 $mod_path="/usr/share/fruitywifi/www/modules/$mod_name";
 $mod_logs="$log_path/$mod_name.log"; 
 $mod_logs_history="$mod_path/includes/logs/";
@@ -32,5 +32,6 @@ $bin_sleep = "/bin/sleep";
 $bin_nmcli = "/usr/share/fruitywifi/www/modules/nmcli/includes/NetworkManager/cli/src/nmcli";
 
 # ISUP
-$mod_isup="$bin_danger \"$bin_nmcli -n d | grep -iEe '^$supplicant_iface.+ connected'\"";
+//$mod_isup="$bin_danger \"$bin_nmcli -n d | grep -iEe '^$supplicant_iface.+ connected'\"";
+$mod_isup="$bin_sudo $bin_nmcli -n d | grep -iEe '^$supplicant_iface.+ connected'";
 ?>

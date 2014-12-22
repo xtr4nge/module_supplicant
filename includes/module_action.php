@@ -17,7 +17,7 @@
 */ 
 ?>
 <?
-//include "../login_check.php";
+include "../../../login_check.php";
 include "../../../config/config.php";
 include "../_info_.php";
 include "../../../functions.php";
@@ -78,7 +78,7 @@ if($service == "nmcli") {
         exec_fruitywifi($exec);
         $exec = "$bin_nmcli -n c delete id nmcli_raspberry_wifi";
         //exec("$bin_danger \"" . $exec . "\"" ); //DEPRECATED
-		exec_fruitywifi($exec);
+        exec_fruitywifi($exec);
         
         // COPY LOG
         if ( 0 < filesize( $mod_logs ) ) {
