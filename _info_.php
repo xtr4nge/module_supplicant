@@ -5,7 +5,6 @@ $mod_path="/usr/share/fruitywifi/www/modules/$mod_name";
 $mod_logs="$log_path/$mod_name.log"; 
 $mod_logs_history="$mod_path/includes/logs/";
 $mod_panel="show";
-$mod_logs_panel="disabled";
 $mod_type="service";
 $mod_alias="Supplicant";
 
