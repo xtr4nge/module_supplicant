@@ -1,1 +1,3 @@
-<b>nmcli</b> is a command‐line tool for controlling NetworkManager and reporting on its status.  It is not meant as a full replacement for nm‐applet or other similar clients but as a complementary utility to those programs.  The main usage for nmcli is on servers, headless machines or for power users who prefer the command line.
+<b>wpa_supplicant</b> - Wi-Fi Protected Access client and IEEE 802.1X supplicant
+<br><br>
+wpa_supplicant is copyright (c) 2003-2014, Jouni Malinen (j@w1.fi) and contributors.

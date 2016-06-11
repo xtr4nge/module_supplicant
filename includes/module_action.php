@@ -1,6 +1,6 @@
 <? 
 /*
-    Copyright (C) 2013-2014 xtr4nge [_AT_] gmail.com
+    Copyright (C) 2013-2016 xtr4nge [_AT_] gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -45,64 +45,112 @@ if($service == "nmcli") {
         // COPY LOG
         if ( 0 < filesize( $mod_logs ) ) {
             $exec = "$bin_cp $mod_logs $mod_logs_history/".gmdate("Ymd-H-i-s").".log";
-            //exec("$bin_danger \"$exec\"" ); //DEPRECATED
             exec_fruitywifi($exec);
             
             $exec = "$bin_echo '' > $mod_logs";
-            //exec("$bin_danger \"$exec\"" ); //DEPRECATED
             exec_fruitywifi($exec);
         }
 		
+		//KILL WPS_SUPPLICANT		
+		$exec = "ps aux|grep -iEe 'FruityWiFI_SUPPLICANT.conf' | grep -v grep | awk '{print $2}'";
+		exec($exec,$output);
+		$exec = "kill " . $output[0];
+		exec_fruitywifi($exec);
+		
+		unset($output);
+		
+		//KILL DHCLIENT
+		$exec = "ps aux|grep -iEe 'dhclient $mod_supplicant_iface' | grep -v grep | awk '{print $2}'";
+		exec($exec,$output);
+		$exec = "kill " . $output[0];
+		exec_fruitywifi($exec);
+		
+		//SETUP & START
+		$exec = "$bin_wpa_passphrase '$mod_supplicant_ssid' '$mod_supplicant_psk' > FruityWiFI_SUPPLICANT.conf";
+		exec_fruitywifi($exec);
+		
+		if ($mod_supplicant_security == "open") {
+			$exec = "$bin_sed -i 's/psk=.*/key_mgmt=NONE/g' FruityWiFI_SUPPLICANT.conf";
+			$output = exec_fruitywifi($exec);
+		}
+		
+		$exec = "$bin_ifconfig $mod_supplicant_iface up";
+		exec_fruitywifi($exec);
+		$exec = "$bin_iwlist $mod_supplicant_iface scan";
+		exec_fruitywifi($exec);
+		$exec = "$bin_wpa_supplicant -i $mod_supplicant_iface -f $mod_logs -t -D wext -c FruityWiFI_SUPPLICANT.conf > /dev/null 2 &";
+		exec_fruitywifi($exec);
+		$exec = "nohup bash -c '$bin_dhclient $mod_supplicant_iface -d' > /dev/null 2 &"; //ALTERNATIVE
+		//$exec = "sudo tmux new -s DHCLIENT -d '$bin_dhclient $mod_supplicant_iface -d'"; //ALTERNATIVE
+        exec_fruitywifi($exec);
+		
+		//$exec = "$bin_sed -i '1i nameserver 8.8.8.8' /etc/resolv.conf";
+		//exec_fruitywifi($exec);
+		
+		$wait = 3;
+		
+		/*
         $exec = "$bin_ifconfig $iface_supplicant up";
-        //exec("$bin_danger \"" . $exec . "\"" ); //DEPRECATED
         exec_fruitywifi($exec);
         $exec = "$bin_nmcli -n d disconnect iface $iface_supplicant";
-        //exec("$bin_danger \"" . $exec . "\"" ); //DEPRECATED
         exec_fruitywifi($exec);
         $exec = "$bin_nmcli -n c delete id nmcli_raspberry_wifi";
-        //exec("$bin_danger \"" . $exec . "\"" ); //DEPRECATED
         exec_fruitywifi($exec);
         		
         $exec = "$bin_iwlist $iface_supplicant scan";
-        //exec("$bin_danger \"" . $exec . "\"" ); //DEPRECATED
         exec_fruitywifi($exec);
         
         $exec = "$bin_nmcli -n dev wifi connect '$supplicant_ssid' password '$supplicant_psk' iface $iface_supplicant name nmcli_raspberry_wifi";
-        //exec("$bin_danger \"" . $exec . "\"" ); //DEPRECATED
         exec_fruitywifi($exec);
-        
+        */
+		
     } else if($action == "stop") {
         // STOP MODULE
+		
+		//KILL WPS_SUPPLICANT		
+		$exec = "ps aux|grep -iEe 'FruityWiFI_SUPPLICANT.conf' | grep -v grep | awk '{print $2}'";
+		exec($exec,$output);
+		$exec = "kill " . $output[0];
+		exec_fruitywifi($exec);
+		
+		unset($output);
+		
+		//KILL DHCLIENT
+		$exec = "ps aux|grep -iEe 'dhclient $mod_supplicant_iface' | grep -v grep | awk '{print $2}'";
+		exec($exec,$output);
+		$exec = "kill " . $output[0];
+		exec_fruitywifi($exec);
+		
+		$exec = "$bin_ifconfig $mod_supplicant_iface 0.0.0.0";
+		exec_fruitywifi($exec);
+		
+		$exec = "$bin_ifconfig $mod_supplicant_iface down";
+		exec_fruitywifi($exec);
+		
+		/*
         $exec = "$bin_nmcli -n d disconnect iface $iface_supplicant";
-        //exec("$bin_danger \"" . $exec . "\"" ); //DEPRECATED
         exec_fruitywifi($exec);
         $exec = "$bin_nmcli -n c delete id nmcli_raspberry_wifi";
-        //exec("$bin_danger \"" . $exec . "\"" ); //DEPRECATED
         exec_fruitywifi($exec);
-        
+        */
+		
         // COPY LOG
         if ( 0 < filesize( $mod_logs ) ) {
             $exec = "$bin_cp $mod_logs $mod_logs_history/".gmdate("Ymd-H-i-s").".log";
-            //exec("$bin_danger \"$exec\"" ); //DEPRECATED
             exec_fruitywifi($exec);
             
             $exec = "$bin_echo '' > $mod_logs";
-            //exec("$bin_danger \"$exec\"" ); //DEPRECATED
             exec_fruitywifi($exec);
         }
-
     }
-
 }
 
 if ($install == "install_$mod_name") {
 
     $exec = "$bin_chmod 755 install.sh";
-    //exec("$bin_danger \"$exec\"" ); //DEPRECATED
     exec_fruitywifi($exec);
     
     $exec = "$bin_sudo ./install.sh > $log_path/install.txt &";
-    //exec("$bin_danger \"$exec\"" ); //DEPRECATED
     exec_fruitywifi($exec);
 
     header('Location: ../../install.php?module='.$mod_name);

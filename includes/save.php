@@ -1,6 +1,6 @@
 <? 
 /*
-    Copyright (C) 2013-2014 xtr4nge [_AT_] gmail.com
+    Copyright (C) 2013-2016 xtr4nge [_AT_] gmail.com
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -51,21 +51,18 @@ $mb_password = $_POST['mb_password'];
 // supplicant options
 if ($type == "save_supplicant") {
 	
-    $exec = "/bin/sed -i 's/^\\\$supplicant_ssid=.*/\\\$supplicant_ssid=\\\"$supplicant_ssid\\\";/g' ../_info_.php";
-    //exec("$bin_danger \"" . $exec . "\"", $output); //DEPRECATED
+    $exec = "/bin/sed -i 's/^\\\$mod_supplicant_ssid=.*/\\\$mod_supplicant_ssid=\\\"$supplicant_ssid\\\";/g' ../_info_.php";
     $output = exec_fruitywifi($exec);
     
-    $exec = "/bin/sed -i 's/^\\\$supplicant_psk=.*/\\\$supplicant_psk=\\\"$supplicant_psk\\\";/g' ../_info_.php";
-    //exec("$bin_danger \"" . $exec . "\"", $output); //DEPRECATED
+    $exec = "/bin/sed -i 's/^\\\$mod_supplicant_psk=.*/\\\$mod_supplicant_psk=\\\"$supplicant_psk\\\";/g' ../_info_.php";
     $output = exec_fruitywifi($exec);
     
-    $exec = "/bin/sed -i 's/^\\\$supplicant_iface=.*/\\\$supplicant_iface=\\\"$supplicant_iface\\\";/g' ../_info_.php";
-    //exec("$bin_danger \"" . $exec . "\"", $output); //DEPRECATED
+    $exec = "/bin/sed -i 's/^\\\$mod_supplicant_iface=.*/\\\$mod_supplicant_iface=\\\"$supplicant_iface\\\";/g' ../_info_.php";
     $output = exec_fruitywifi($exec);
 
 }
 
-header('Location: ../index.php');
+header('Location: ../index.php?tab=2');
 exit;
 
 ?>
